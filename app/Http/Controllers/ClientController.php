@@ -1,33 +1,31 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Client;
 
+use App\Http\Controllers\Controller;
 use App\Models\Conference;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
-    // Display a list of all conferences
+    // List all conferences
     public function index()
     {
         $conferences = Conference::all();
-        return view('client.index', compact('conferences'));
+        return view('client.conferences.index', compact('conferences'));
     }
 
-    // Show details of a specific conference
+    // Show a specific conference
     public function show($id)
     {
         $conference = Conference::findOrFail($id);
-        return view('client.show', compact('conference'));
+        return view('client.conferences.show', compact('conference'));
     }
 
-    // Handle registration for a conference (this method can be expanded)
-    public function register(Request $request, $id)
+    // Register for a conference (dummy implementation)
+    public function register(Request $request)
     {
-        // Validate request data here, e.g., name, email, etc.
-        // Register user to the conference (you might need a pivot table)
-        // Example: $conference->registrations()->attach($userId);
-        
-        return redirect()->route('client.index')->with('success', 'Successfully registered for the conference!');
+        // This is a dummy registration, doesn't store data
+        return redirect()->back()->with('success', 'You have registered successfully! (dummy action)');
     }
 }

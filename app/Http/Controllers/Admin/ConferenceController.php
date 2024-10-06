@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ConferenceRequest;
 use App\Models\Conference;
-use Illuminate\Http\Request;
 
 class ConferenceController extends Controller
 {
-    // Display a list of all conferences
+    // Display a listing of the conferences
     public function index()
     {
         $conferences = Conference::all();
@@ -21,19 +21,14 @@ class ConferenceController extends Controller
         return view('admin.conferences.create');
     }
 
-    // Store a newly created conference in storage
-    public function store(Request $request)
+    // Store a newly created conference
+    public function store(ConferenceRequest $request)
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'speakers' => 'required|string',
-            'date' => 'required|date',
-            'time' => 'required|date_format:H:i',
-            'address' => 'required|string|max:255',
-        ]);
+        // Use $request->validated() to get the validated data
+        $validatedData = $request->validated();
 
-        Conference::create($request->all());
+        // Create a new conference
+        Conference::create($validatedData);
 
         return redirect()->route('admin.conferences.index')->with('success', 'Conference created successfully!');
     }
@@ -46,34 +41,22 @@ class ConferenceController extends Controller
     }
 
     // Update a specific conference
-    public function update(Request $request, $id)
+    public function update(ConferenceRequest $request, $id)
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'speakers' => 'required|string',
-            'date' => 'required|date',
-            'time' => 'required|date_format:H:i',
-            'address' => 'required|string|max:255',
-        ]);
-
         $conference = Conference::findOrFail($id);
-        $conference->update($request->all());
+        
+        // Update the conference with validated data
+        $conference->update($request->validated());
 
         return redirect()->route('admin.conferences.index')->with('success', 'Conference updated successfully!');
     }
 
-    // Delete a specific conference
+    // Remove a specific conference
     public function destroy($id)
     {
         $conference = Conference::findOrFail($id);
-        
-        // Ensure conference is not already occurred
-        if ($conference->date < now()) {
-            return redirect()->route('admin.conferences.index')->with('error', 'Cannot delete past conferences!');
-        }
-        
         $conference->delete();
+
         return redirect()->route('admin.conferences.index')->with('success', 'Conference deleted successfully!');
     }
 }

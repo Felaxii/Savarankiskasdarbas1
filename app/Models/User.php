@@ -1,29 +1,17 @@
 <?php
 
 namespace App\Models;
-public const ROLE_CLIENT = 'client';
-public const ROLE_EMPLOYEE = 'employee';
-public const ROLE_ADMIN = 'admin';
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable;
+    use Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $fillable = ['name', 'surname', 'email', 'password'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -46,5 +34,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function conferences()
+    {
+        return $this->belongsToMany(Conference::class, 'conference_user');
     }
 }
