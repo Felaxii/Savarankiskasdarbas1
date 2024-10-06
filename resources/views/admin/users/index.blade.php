@@ -1,12 +1,42 @@
 @extends('app')
 
 @section('content')
-<h1>All Users</h1>
-<ul>
-    @foreach($users as $user)
-        <li>
-            <a href="{{ route('admin.users.edit', $user->id) }}">{{ $user->name }} {{ $user->surname }}</a>
-        </li>
-    @endforeach
-</ul>
+    <h2>Manage Users</h2>
+
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($users as $user)
+                <tr>
+                    <td>{{ $user->id }}</td>
+                    <td>{{ $user->username }}</td>
+                    <td>{{ $user->email }}</td>
+                    <td>
+                        <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="4" class="text-center">No users found.</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
 @endsection

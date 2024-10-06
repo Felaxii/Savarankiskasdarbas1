@@ -1,36 +1,46 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Conference;
+use App\Models\User;
 
 class ClientController extends Controller
 {
-    // Display the latest conference for clients
+    // Show the client conferences index page
     public function index()
     {
-        // Fetch only the latest conference
+        // Fetch the latest conference
         $latestConference = Conference::latest()->first(); // Fetch the latest conference
 
-        return view('client.conferences.index', compact('latestConference'));
+        return view('client.conferences.index', compact('latestConference')); // Pass the variable to the view
     }
 
-    public function show($id)
+    // Show the registration form
+    public function showRegisterForm()
     {
-        $conference = Conference::findOrFail($id); // Use findOrFail for better error handling
-        return view('client.conferences.show', compact('conference'));
+        return view('client.register');
     }
 
-    
-    public function create()
-    {
-        return view('client.register'); // Return the registration/login form view
-    }
-
+    // Handle the registration logic
     public function register(Request $request)
     {
-        // Placeholder for registration logic
+        // Validate the incoming request data
+        $request->validate([
+            'username' => 'required|string|max:255|unique:users',
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+        ]);
 
-        return redirect()->route('client.conferences.index'); // Redirect to the conferences index
+        // Create a new user with the validated data
+        User::create([
+            'username' => $request->username,
+            'email' => $request->email,
+            'password' => bcrypt($request->password), // Hash the password
+        ]);
+
+        // Redirect to conferences index with a success message
+        return redirect()->route('client.conferences.index')->with('success', 'User registered successfully!');
     }
 }

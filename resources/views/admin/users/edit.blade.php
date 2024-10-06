@@ -2,19 +2,25 @@
 
 @section('content')
 <h1>Edit User</h1>
+
+
 <form action="{{ route('admin.users.update', $user->id) }}" method="POST">
     @csrf
     @method('PUT')
-    <label for="name">Name:</label>
-    <input type="text" name="name" value="{{ $user->name }}" required>
-    
-    <label for="surname">Surname:</label>
-    <input type="text" name="surname" value="{{ $user->surname }}" required>
-    
+
+    <label for="username">Username:</label>
+    <input type="text" name="username" value="{{ $user->username }}" required>
+
     <label for="email">Email:</label>
     <input type="email" name="email" value="{{ $user->email }}" required>
 
     <button type="submit">Update User</button>
-    <button type="submit">Delete User</button>
 </form>
+
+<form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" style="display:inline;">
+    @csrf
+    @method('DELETE')
+    <button type="submit" class="btn btn-danger">Delete User</button>
+</form>
+
 @endsection

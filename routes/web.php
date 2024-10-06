@@ -17,6 +17,10 @@ Route::prefix('client')->group(function () {
     Route::get('/conferences/{id}', [ClientController::class, 'show'])->name('client.conferences.show'); // Display a specific conference
     Route::get('/register', [ClientController::class, 'create'])->name('client.register'); // Registration route
     Route::post('/register', [ClientController::class, 'register'])->name('client.register.post'); // Handle registration form submission
+    
+    Route::get('/conferences', [ClientController::class, 'index'])->name('client.conferences.index');
+    Route::get('/register', [ClientController::class, 'showRegisterForm'])->name('client.register');
+    Route::post('/register', [ClientController::class, 'register'])->name('client.register.post');
 });
 // Employee routes
 Route::prefix('employee')->group(function () {
@@ -32,19 +36,21 @@ Route::prefix('admin')->group(function () {
     Route::get('/conferences/{id}/edit', [ConferenceController::class, 'edit'])->name('admin.conferences.edit');
     Route::put('/conferences/{id}', [ConferenceController::class, 'update'])->name('admin.conferences.update');
     Route::delete('/conferences/{id}', [ConferenceController::class, 'destroy'])->name('admin.conferences.destroy');
+    
+    Route::get('/register', [ClientController::class, 'showRegisterForm'])->name('client.register');
+    Route::post('/register', [ClientController::class, 'register'])->name('client.register.post');
+
 });
     // Admin Dashboard
     Route::get('/dashboard', function () {
         return view('home'); // Admin Dashboard view
     })->name('admin.dashboard');
-    
 
     // User Management
-    Route::get('/users', [UserController::class, 'index'])->name('admin.users.index'); // List all users
-    Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('admin.users.edit'); // Edit user form
-    Route::put('/users/{id}', [UserController::class, 'update'])->name('admin.users.update'); // Update user
-
-    // Conference Management
-
+    Route::prefix('admin')->group(function () {
+        Route::get('/users', [UserController::class, 'index'])->name('admin.users.index'); // List all users
+        Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy'); // Remove user
+    });
+    
 
 
