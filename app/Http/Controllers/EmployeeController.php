@@ -3,21 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Conference;
-use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
     public function index()
     {
-        // Fetch all conferences to show to the client
-        $conferences = Conference::all();
-        return view('client.conferences.index', compact('conferences'));
+        $conferences = Conference::all(); // Get all conferences
+        return view('employee.conferences.index', compact('conferences')); // Return view with conferences
     }
 
     public function show($id)
     {
-        // Show a specific conference
-        $conference = Conference::findOrFail($id);
-        return view('client.conferences.show', compact('conference'));
+        $conference = Conference::findOrFail($id); // Find the conference by ID
+        return view('employee.conferences.show', compact('conference')); // Return specific conference view
     }
 }

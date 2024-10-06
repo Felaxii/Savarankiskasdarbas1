@@ -1,22 +1,23 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ConferenceController;
 use App\Http\Controllers\EmployeeController;
 
 // Main page route
 Route::get('/', function () {
-    return view('welcome');
+    return view('welcome'); // Main system page
 });
+
 
 // Client routes
 Route::prefix('client')->group(function () {
-    Route::get('/conferences', [EmployeeController::class, 'index'])->name('client.conferences.index'); // Display all conferences
-    Route::get('/conferences/{id}', [EmployeeController::class, 'show'])->name('client.conferences.show'); // Display a specific conference
-    Route::post('/register', function () {
-        return redirect()->back(); // Simple registration logic that refreshes the page
-    })->name('client.register'); // Registration route
+    Route::get('/conferences', [ClientController::class, 'index'])->name('client.conferences.index'); // Display all conferences
+    Route::get('/conferences/{id}', [ClientController::class, 'show'])->name('client.conferences.show'); // Display a specific conference
+    Route::get('/register', [ClientController::class, 'create'])->name('client.register'); // Registration route
+    
 });
 
 // Employee routes

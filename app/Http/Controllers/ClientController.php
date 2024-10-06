@@ -1,31 +1,36 @@
 <?php
 
-namespace App\Http\Controllers\Client;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\Conference;
 use Illuminate\Http\Request;
+use App\Models\Conference;
 
 class ClientController extends Controller
 {
-    // List all conferences
+    // Display all conferences
     public function index()
     {
-        $conferences = Conference::all();
-        return view('client.conferences.index', compact('conferences'));
+        $conferences = Conference::all(); // Get all conferences
+        return view('client.conferences.index', compact('conferences')); // Return view with conferences
     }
 
-    // Show a specific conference
+    // Display specific conference details
     public function show($id)
     {
-        $conference = Conference::findOrFail($id);
-        return view('client.conferences.show', compact('conference'));
+        $conference = Conference::findOrFail($id); // Find the conference by ID
+        return view('client.conferences.show', compact('conference')); // Return specific conference view
     }
 
-    // Register for a conference (dummy implementation)
+    // Display registration/login form
+    public function create()
+    {
+        return view('client.register'); // Return the registration/login form view
+    }
+
     public function register(Request $request)
     {
-        // This is a dummy registration, doesn't store data
-        return redirect()->back()->with('success', 'You have registered successfully! (dummy action)');
+        // Here you would handle the registration logic (if any)
+        // For now, simply refresh the page as per your requirements
+        return redirect()->route('client.conferences.index'); // Redirect to the conferences index
     }
 }
