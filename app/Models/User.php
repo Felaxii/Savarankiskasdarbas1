@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Models;
+public const ROLE_CLIENT = 'client';
+public const ROLE_EMPLOYEE = 'employee';
+public const ROLE_ADMIN = 'admin';
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
