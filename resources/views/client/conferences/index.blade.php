@@ -28,25 +28,28 @@
                 <th>Title</th>
                 <th>Description</th>
                 <th>Speakers</th>
+                <th>Lectures</th>
                 <th>Date</th>
                 <th>Time</th>
                 <th>Address</th>
-                <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($conferences as $conference)
+            @forelse($conferences as $conference)
                 <tr>
                     <td>{{ $conference->title }}</td>
                     <td>{{ $conference->description }}</td>
                     <td>{{ $conference->speakers }}</td>
-                    <td>{{ $conference->date->format('Y-m-d') }}</td>
+                    <td>{{ $conference->lectures }}</td>
+                    <td>{{ $conference->date }}</td>
                     <td>{{ $conference->time }}</td>
                     <td>{{ $conference->address }}</td>
-                    <td><a href="{{ route('client.conferences.show', $conference->id) }}" class="btn btn-info">View</a></td>
                 </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="7" class="text-center">No upcoming conferences.</td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
-</div>
 @endsection

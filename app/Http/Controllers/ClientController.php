@@ -16,7 +16,7 @@ class ClientController extends Controller
 
     public function show($id)
     {
-        $conference = Conference::findOrFail($id);
+        $conference = Conference::findfirst($id);
         return view('client.conferences.show', compact('conference'));
     }
     // Display registration/login form

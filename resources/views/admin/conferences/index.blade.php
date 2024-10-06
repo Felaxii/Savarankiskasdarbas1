@@ -1,29 +1,34 @@
 @extends('app')
 
-@section('title', 'Admin Conferences')
-
 @section('content')
     <h2>Admin Conferences</h2>
-    <a href="{{ route('admin.conferences.create') }}" class="btn btn-primary mb-3">Create Conference</a>
+
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <table class="table">
         <thead>
             <tr>
                 <th>Title</th>
                 <th>Description</th>
                 <th>Speakers</th>
+
                 <th>Date</th>
                 <th>Time</th>
                 <th>Address</th>
-                <th>Action</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($conferences as $conference)
+            @forelse($conferences as $conference)
                 <tr>
                     <td>{{ $conference->title }}</td>
                     <td>{{ $conference->description }}</td>
                     <td>{{ $conference->speakers }}</td>
-                    <td>{{ $conference->date->format('Y-m-d') }}</td>
+                    <td>{{ $conference->date }}</td>
                     <td>{{ $conference->time }}</td>
                     <td>{{ $conference->address }}</td>
                     <td>
@@ -35,7 +40,13 @@
                         </form>
                     </td>
                 </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="8" class="text-center">No conferences found.</td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
+
+    <a href="{{ route('admin.conferences.create') }}" class="btn btn-primary">Create New Conference</a>
 @endsection

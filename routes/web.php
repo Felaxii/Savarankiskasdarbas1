@@ -26,9 +26,9 @@ Route::prefix('employee')->group(function () {
 
 // Admin routes
 Route::prefix('admin')->group(function () {
-    Route::get('/conferences', [ConferenceController::class, 'index'])->name('admin.conferences.index');
-    Route::get('/conferences/create', [ConferenceController::class, 'create'])->name('admin.conferences.create');
-    Route::post('/conferences', [ConferenceController::class, 'store'])->name('admin.conferences.store');
+    Route::get('/conferences', [ConferenceController::class, 'index'])->name('admin.conferences.index'); // List all conferences
+    Route::get('/conferences/create', [ConferenceController::class, 'create'])->name('admin.conferences.create'); // Create conference form
+    Route::post('/conferences', [ConferenceController::class, 'store'])->name('admin.conferences.store'); // Store new conference
     Route::get('/conferences/{id}/edit', [ConferenceController::class, 'edit'])->name('admin.conferences.edit');
     Route::put('/conferences/{id}', [ConferenceController::class, 'update'])->name('admin.conferences.update');
     Route::delete('/conferences/{id}', [ConferenceController::class, 'destroy'])->name('admin.conferences.destroy');

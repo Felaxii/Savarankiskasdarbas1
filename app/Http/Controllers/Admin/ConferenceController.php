@@ -5,14 +5,15 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ConferenceRequest;
 use App\Models\Conference;
+use Illuminate\Http\Request;
 
 class ConferenceController extends Controller
 {
     // Display a listing of the conferences
     public function index()
     {
-        $conferences = Conference::all();
-        return view('admin.conferences.index', compact('conferences'));
+        $conferences = Conference::all(); // Fetch all conferences
+        return view('admin.conferences.index', compact('conferences')); // Pass to the view
     }
 
     // Show the form for creating a new conference
@@ -22,17 +23,24 @@ class ConferenceController extends Controller
     }
 
     // Store a newly created conference
-    public function store(ConferenceRequest $request)
+    public function store(Request $request)
     {
-        // Use $request->validated() to get the validated data
-        $validatedData = $request->validated();
-
-        // Create a new conference
-        Conference::create($validatedData);
-
+        // Validate the incoming request data
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'speakers' => 'required|string|max:255',
+            'date' => 'required|date',
+            'time' => 'required|date_format:H:i',
+            'address' => 'required|string|max:255',
+        ]);
+    
+        // Create a new conference with the validated data
+        Conference::create($request->all());
+    
+        // Redirect back to the index with a success message
         return redirect()->route('admin.conferences.index')->with('success', 'Conference created successfully!');
     }
-
     // Show the form for editing a specific conference
     public function edit($id)
     {

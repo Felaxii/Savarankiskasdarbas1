@@ -26,7 +26,6 @@ class ConferenceRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'lecturers' => 'required|string',
             'date' => 'required|date|after_or_equal:today', // Ensure the date is today or in the future
             'time' => 'required|date_format:H:i', // Validate time format (24-hour format)
             'address' => 'required|string|max:255',
@@ -43,7 +42,6 @@ class ConferenceRequest extends FormRequest
         return [
             'title.required' => 'The title field is required.',
             'description.required' => 'The description field is required.',
-            'lecturers.required' => 'The lecturers field is required.',
             'date.required' => 'The date field is required.',
             'date.after_or_equal' => 'The date must be today or in the future.',
             'time.required' => 'The time field is required.',

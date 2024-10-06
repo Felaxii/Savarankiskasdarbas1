@@ -15,5 +15,6 @@
     <input type="email" name="email" value="{{ $user->email }}" required>
 
     <button type="submit">Update User</button>
+    <button type="submit">Delete User</button>
 </form>
 @endsection

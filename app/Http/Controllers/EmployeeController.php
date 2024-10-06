@@ -14,7 +14,7 @@ class EmployeeController extends Controller
 
     public function show($id)
     {
-        $conference = Conference::findOrFail($id);
+        $conference = Conference::findfirst($id);
         return view('employee.conferences.show', compact('conference'));
     }
 }

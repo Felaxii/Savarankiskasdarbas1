@@ -1,36 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee Conferences</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-<div class="container mt-5">
-    <h2>Employee Conferences</h2>
-    <table class="table table-striped">
+@extends('app')
+
+@section('content')
+    <h2>Conferences</h2>
+
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <table class="table">
         <thead>
-        <tr>
-            <th>Title</th>
-            <th>Date</th>
-            <th>Description</th>
-            <th>Status</th>
-            <th>Action</th>
-        </tr>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Speakers</th>
+                <th>Lecturers</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Address</th>
+                <th>Actions</th>
+            </tr>
         </thead>
         <tbody>
-        @foreach($conferences as $conference)
-            <tr>
-                <td>{{ $conference->title }}</td>
-                <td>{{ $conference->date->format('Y-m-d') }}</td>
-                <td>{{ $conference->description }}</td>
-                <td>{{ $conference->date >= now() ? 'Current' : 'Past' }}</td>
-                <td><a href="{{ route('employee.conferences.show', $conference->id) }}" class="btn btn-info">View</a></td>
-            </tr>
-        @endforeach
+            @foreach($conferences as $conference)
+                <tr>
+                    <td>{{ $conference->title }}</td>
+                    <td>{{ $conference->description }}</td>
+                    <td>{{ $conference->speakers }}</td>
+                    <td>{{ $conference->lectures }}</td>
+                    <td>{{ $conference->date }}</td>
+                    <td>{{ $conference->time }}</td>
+                    <td>{{ $conference->address }}</td>
+                    <td>
+                        <a href="{{ route('admin.conferences.edit', $conference->id) }}" class="btn btn-warning">Edit</a>
+                        <form action="{{ route('admin.conferences.destroy', $conference->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
         </tbody>
     </table>
-</div>
-</body>
-</html>
+
+    <a href="{{ route('admin.conferences.create') }}" class="btn btn-primary">Create New Conference</a>
+@endsection
