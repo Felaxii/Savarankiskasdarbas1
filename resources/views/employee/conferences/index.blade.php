@@ -1,10 +1,9 @@
 @extends('app')
 
-@section('title', 'Admin Conferences')
+@section('title', 'Employee Conferences')
 
 @section('content')
-    <h2>Admin Conferences</h2>
-    <a href="{{ route('admin.conferences.create') }}" class="btn btn-primary mb-3">Create Conference</a>
+    <h2>Employee Conferences</h2>
     <table class="table">
         <thead>
             <tr>
@@ -26,14 +25,7 @@
                     <td>{{ $conference->date->format('Y-m-d') }}</td>
                     <td>{{ $conference->time }}</td>
                     <td>{{ $conference->address }}</td>
-                    <td>
-                        <a href="{{ route('admin.conferences.edit', $conference->id) }}" class="btn btn-warning">Edit</a>
-                        <form action="{{ route('admin.conferences.destroy', $conference->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
-                    </td>
+                    <td><a href="{{ route('employee.conferences.show', $conference->id) }}" class="btn btn-info">View</a></td>
                 </tr>
             @endforeach
         </tbody>

@@ -2,17 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Conference extends Model
 {
-    use HasFactory;
-
     protected $fillable = ['title', 'description', 'speakers', 'date', 'time', 'address'];
 
-    public function registrations()
+    // Scope to get only current/future conferences
+    public function scopeCurrent($query)
     {
-        return $this->belongsToMany(User::class, 'conference_user');
+        return $query->where('date', '>=', now());
+    }
+
+    // Scope to get past conferences
+    public function scopePast($query)
+    {
+        return $query->where('date', '<', now());
     }
 }

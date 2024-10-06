@@ -1,6 +1,7 @@
 @extends('app')
 
 @section('content')
+
 <h1>Create Conference</h1>
 <form action="{{ route('admin.conferences.store') }}" method="POST">
     @csrf

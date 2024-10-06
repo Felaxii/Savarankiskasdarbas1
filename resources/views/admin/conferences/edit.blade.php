@@ -1,6 +1,8 @@
 @extends('app')
 
+
 @section('content')
+
 <h1>Edit Conference</h1>
 <form action="{{ route('admin.conferences.update', $conference->id) }}" method="POST">
     @csrf
