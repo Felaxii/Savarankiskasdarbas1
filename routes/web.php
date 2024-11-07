@@ -33,8 +33,10 @@ Route::prefix('employee')->group(function () {
     // Display all conferences
     Route::get('/conferences', [EmployeeController::class, 'index'])->name('employee.conferences.index');
     
-    // Display a specific conference (you may use this for viewing conference details)
-    Route::get('/conferences/{id}', [EmployeeController::class, 'show'])->name('employee.conferences.show');
+    Route::get('/conference/{conference}/attendees', [ConferenceController::class, 'showAttendees'])->name('conference.attendees');
+    Route::get('employee/conferences/{conferenceId}/attendees', [EmployeeController::class, 'showAttendees'])
+    ->name('employee.conferences.attendees');
+     
 });
 
 // Admin routes

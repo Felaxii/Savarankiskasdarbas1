@@ -33,6 +33,7 @@
     </form>
 
     <br>
+    <br>
 
     @if($latestConference)
         <a href="{{ route('client.conferences.register', ['conferenceId' => $latestConference->id]) }}" class="btn btn-primary">Register</a>

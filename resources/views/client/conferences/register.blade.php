@@ -10,9 +10,9 @@
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
-</ul>
-</div>
-@endif
+            </ul>
+        </div>
+    @endif
 
     <form action="{{ route('client.conferences.register.post', ['conferenceId' => $conference->id]) }}" method="POST">
         @csrf
@@ -38,11 +38,11 @@
             <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
         </div>
         <button type="submit" class="btn btn-primary">Register</button>
-
-        
     </form>
 
+    <br>
+    <br>
+    <a href="{{ route('client.login') }}" class="btn btn-secondary">Login</a>
 
-    
 </div>
 @endsection

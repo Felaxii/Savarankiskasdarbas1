@@ -17,5 +17,14 @@ class EmployeeController extends Controller
         $conference = Conference::findfirst($id);
         return view('employee.conferences.show', compact('conference'));
     }
+    public function showAttendees($conferenceId)
+    {
+       
+        $conference = Conference::findOrFail($conferenceId);
+       
+        $attendees = $conference->users()->whereNull('users.deleted_at')->get();
+    
+        return view('employee.conferences.attendees', compact('conference', 'attendees'));
+    }
 }
 

@@ -58,4 +58,12 @@ class ConferenceController extends Controller
 
         return redirect()->route('admin.conferences.index')->with('success', 'Conference deleted successfully!');
     }
+    public function showAttendees($conferenceId)
+{
+    $conference = Conference::findOrFail($conferenceId);
+
+    $attendees = $conference->users()->whereNull('deleted_at')->get();
+
+    return view('employee.conferences.attendees', compact('conference', 'attendees'));
+}
 }

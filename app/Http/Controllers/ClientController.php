@@ -37,7 +37,7 @@ class ClientController extends Controller
             'name' => 'required|string|max:255',
             'surname' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email', 
-            'password' => 'required|string|min:8|confirmed', // Ensure password is at least 8 characters and confirmed
+            'password' => 'required|string|min:8|confirmed',
         ]);
     
         // Find the conference by ID or fail
@@ -48,15 +48,14 @@ class ClientController extends Controller
             'name' => $request->name,
             'surname' => $request->surname,
             'email' => $request->email,
-            'password' => bcrypt($request->password), // Encrypt the password
+            'password' => bcrypt($request->password), 
         ]);
     
         // Register the user for the conference by attaching the conference to the user
         $user->conferences()->attach($conferenceId);
     
-        // Redirect to the conference details page with a success message
-        return redirect()->route('client.conferences.show', ['id' => $conference->id])
-                         ->with('success', 'You have successfully registered for the conference!');
+        // Redirect to the conference details page
+        return redirect()->route('client.conferences.show', ['id' => $conference->id]);
     }
 
     // Show login form
@@ -83,7 +82,7 @@ class ClientController extends Controller
             return back()->withErrors(['email' => 'Invalid credentials'])->withInput();
         }
 
-        // Check if the account is deleted (you can use a "deleted_at" column if you are soft deleting users)
+        // Check if the account is deleted 
     if (!$user || !Hash::check($request->password, $user->password)) {
         return back()->withErrors(['email' => 'Invalid credentials'])->withInput();
     }
@@ -98,7 +97,7 @@ class ClientController extends Controller
             return redirect()->route('client.conferences.show', ['id' => $conferenceId]);
         }
     
-        // If no conferenceId is stored, redirect to the main conferences index page (or any other page you want)
+        // If no conferenceId is stored, redirect to the main conferences index page 
         return redirect()->route('client.conferences.index');
     
     }
@@ -112,4 +111,5 @@ class ClientController extends Controller
         // Return the view for a specific conference
         return view('client.conferences.show', compact('conference'));
     }
+    
 }
