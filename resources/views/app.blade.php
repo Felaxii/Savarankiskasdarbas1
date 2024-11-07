@@ -40,7 +40,7 @@
 
     <footer class="bg-gray py-4 text-center">
         <div class="container">
-            <p class="mb-0">&copy; 2024 CMS. All Rights Reserved.</p>
+            <p class="mb-0">&copy; 2024 BPV. All Rights Reserved.</p>
         </div>
     </footer>
     <script src="{{ mix('js/app.js') }}"></script>

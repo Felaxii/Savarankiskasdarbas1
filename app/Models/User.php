@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, SoftDeletes;
 
     protected $fillable = [
-        'name', 'surname', 'email', 
+        'name', 'surname', 'email', 'password',
     ];
   
     public function conferences()
@@ -22,4 +23,6 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Role::class, 'users_roles');
     }
+
+    
 }

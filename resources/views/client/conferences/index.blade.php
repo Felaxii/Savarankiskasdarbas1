@@ -7,7 +7,7 @@
     <br>
   
     @if($latestConference)
-        <h3>Latest Conferences</h3>
+        <h3>Latest Conference</h3>
         <table class="table">
             <thead>
                 <tr>
@@ -17,7 +17,7 @@
                     <th>Date</th>
                     <th>Time</th>
                     <th>Address</th>
-                    <th>Register</th>
+                    <th>Login/Register</th>
                 </tr>
             </thead>
             <tbody>
@@ -29,8 +29,11 @@
                     <td>-</td>
                     <td>-</td>
                     <td>
-                       
+                    
+                    <a href="{{ route('client.login') }}" class="btn btn-secondary">Login</a>
+                    
                         <a href="{{ route('client.conferences.register', ['conferenceId' => $latestConference->id]) }}" class="btn btn-primary">Register</a>
+
                     </td>
                 </tr>
             </tbody>

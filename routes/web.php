@@ -15,24 +15,17 @@ Route::get('/', function () {
 Route::prefix('client')->group(function () {
     // Display all conferences
     Route::get('/conferences', [ClientController::class, 'index'])->name('client.conferences.index');
-
-    // Display a specific conference (you may use this for viewing conference details)
+    
+    // Display a specific conference
     Route::get('/conferences/{id}', [ClientController::class, 'show'])->name('client.conferences.show');
-    
-    // Registration route (no need to repeat /register)
-    Route::get('/register', [ClientController::class, 'showRegisterForm'])->name('client.register');
-    Route::post('/register', [ClientController::class, 'register'])->name('client.register.post');
-    
+
     // Routes for conference-specific registration
     Route::get('/conferences/register/{conferenceId}', [ClientController::class, 'showConferenceRegisterForm'])->name('client.conferences.register');
     Route::post('/conferences/register/{conferenceId}', [ClientController::class, 'conferenceRegister'])->name('client.conferences.register.post');
 
-    Route::prefix('client')->group(function () {
-        Route::get('/conferences', [ClientController::class, 'index'])->name('client.conferences.index'); // Display all conferences
-        Route::get('/conferences/{id}', [ClientController::class, 'show'])->name('client.conferences.show'); // Display a specific conference
-        Route::get('/conferences/{conferenceId}/register', [ClientController::class, 'showConferenceRegisterForm'])->name('client.conferences.register'); // Show registration form
-        Route::post('/conferences/{conferenceId}/register', [ClientController::class, 'conferenceRegister'])->name('client.conferences.register.post'); // Handle registration form submission
-    });
+    // Login route
+    Route::get('/login', [ClientController::class, 'showLoginForm'])->name('client.login');
+    Route::post('/login', [ClientController::class, 'login'])->name('client.login.post');
 });
 
 // Employee routes

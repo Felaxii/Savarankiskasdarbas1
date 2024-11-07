@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Conference;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class ClientController extends Controller
 {
@@ -18,6 +20,8 @@ class ClientController extends Controller
     // Show the registration form for a specific conference
     public function showConferenceRegisterForm($conferenceId)
     {
+          // Store the conferenceId in the session so it can be used after login
+             session(['conferenceId' => $conferenceId]);
         // Find the conference by ID or fail
         $conference = Conference::findOrFail($conferenceId);
 
@@ -54,13 +58,58 @@ class ClientController extends Controller
         return redirect()->route('client.conferences.show', ['id' => $conference->id])
                          ->with('success', 'You have successfully registered for the conference!');
     }
+
+    // Show login form
+    public function showLoginForm()
+    {
+        $latestConference = Conference::latest()->first(); 
+        return view('client.conferences.login', compact('latestConference'));
+    }
+
+    // Handle login form submission
+    public function login(Request $request)
+    {
+        // Validate the login inputs
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string',
+        ]);
+
+        // Attempt to authenticate the user
+        $user = User::where('email', $request->email)->first();
+
+        // Check if the user exists and if the password is correct
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return back()->withErrors(['email' => 'Invalid credentials'])->withInput();
+        }
+
+        // Check if the account is deleted (you can use a "deleted_at" column if you are soft deleting users)
+    if (!$user || !Hash::check($request->password, $user->password)) {
+        return back()->withErrors(['email' => 'Invalid credentials'])->withInput();
+    }
+
+        // Log the user in
+        Auth::login($user);
+
+        // Redirect to the user dashboard or another route
+        $conferenceId = session('conferenceId');
+        
+        if ($conferenceId) {
+            return redirect()->route('client.conferences.show', ['id' => $conferenceId]);
+        }
+    
+        // If no conferenceId is stored, redirect to the main conferences index page (or any other page you want)
+        return redirect()->route('client.conferences.index');
+    
+    }
+
+    // Show a specific conference
     public function show($id)
-{
-    // Find the conference by ID
-    $conference = Conference::findOrFail($id);
+    {
+        // Find the conference by ID
+        $conference = Conference::findOrFail($id);
 
-    // Return the view for a specific conference
-    return view('client.conferences.show', compact('conference'));
-}
-
+        // Return the view for a specific conference
+        return view('client.conferences.show', compact('conference'));
+    }
 }

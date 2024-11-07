@@ -38,6 +38,11 @@
             <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
         </div>
         <button type="submit" class="btn btn-primary">Register</button>
+
+        
     </form>
+
+
+    
 </div>
 @endsection
