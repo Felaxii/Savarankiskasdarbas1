@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ConferenceController;
 use App\Http\Controllers\EmployeeController;
 
+
 // Main page route
 Route::get('/', function () {
     return view('welcome'); // Main system page
@@ -58,13 +59,17 @@ Route::prefix('admin')->group(function () {
     Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
 
-    Route::prefix('admin')->middleware('auth')->group(function () {
-        // Conference routes
-        Route::get('conferences/{id}/edit', [ConferenceController::class, 'edit'])->name('admin.conferences.edit');
-        Route::put('conferences/{id}', [ConferenceController::class, 'update'])->name('admin.conferences.update');
-        Route::delete('conferences/{id}', [ConferenceController::class, 'destroy'])->name('admin.conferences.destroy');
-    
-        // Show attendees for a conference
-        Route::get('conferences/{conferenceId}/attendees', [ConferenceController::class, 'showAttendees'])->name('admin.conferences.attendees');
-    });
+Route::prefix('admin')->middleware('auth')->group(function () {
+    // Display the list of users
+    Route::get('users', [UserController::class, 'index'])->name('admin.users.index');
+
+    // Edit a user
+    Route::get('users/{user}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
+
+    // Update a user
+    Route::put('users/{user}', [UserController::class, 'update'])->name('admin.users.update');
+
+    // Delete a user
+    Route::delete('users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+});
 });

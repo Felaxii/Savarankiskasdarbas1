@@ -8,7 +8,6 @@
 </head>
 <body>
 
-
     <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">Conference Management</a>
@@ -26,11 +25,12 @@
         <li class="nav-item">
           <a class="nav-link" href="{{ route('admin.dashboard') }}">Admin Dashboard</a>
         </li>
-
+        
       </ul>
  
     </div>
   </div>
+  
 </nav>
 
 
