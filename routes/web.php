@@ -57,4 +57,14 @@ Route::prefix('admin')->group(function () {
     // User management routes
     Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+
+    Route::prefix('admin')->middleware('auth')->group(function () {
+        // Conference routes
+        Route::get('conferences/{id}/edit', [ConferenceController::class, 'edit'])->name('admin.conferences.edit');
+        Route::put('conferences/{id}', [ConferenceController::class, 'update'])->name('admin.conferences.update');
+        Route::delete('conferences/{id}', [ConferenceController::class, 'destroy'])->name('admin.conferences.destroy');
+    
+        // Show attendees for a conference
+        Route::get('conferences/{conferenceId}/attendees', [ConferenceController::class, 'showAttendees'])->name('admin.conferences.attendees');
+    });
 });

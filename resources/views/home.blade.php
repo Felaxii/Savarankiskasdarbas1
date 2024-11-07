@@ -10,8 +10,8 @@
     <div class="mt-5">
         <h2>Manage</h2>
         <ul class="list-group">
-            <li class="list-group-item"><a href="{{ route('admin.users.index') }}">Manage Users</a></li>
-            <li class="list-group-item"><a href="{{ route('admin.conferences.index') }}">Manage Conferences</a></li>
+            <li class="list-group-item"><a href="{{ route('admin.users.index') }}" class="btn btn-info mt-2">Manage Users</a></li>
+            <li class="list-group-item"><a href="{{ route('admin.conferences.index') }}" class="btn btn-info mt-3">Manage Conferences</a></li>
         </ul>
     </div>
 @endsection

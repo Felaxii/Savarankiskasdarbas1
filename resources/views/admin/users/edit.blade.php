@@ -1,26 +1,37 @@
 @extends('app')
 
 @section('content')
-<h1>Edit User</h1>
+    <h2>Edit User - {{ $user->name }}</h2>
 
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
-<form action="{{ route('admin.users.update', $user->id) }}" method="POST">
-    @csrf
-    @method('PUT')
+    <form action="{{ route('admin.users.update', $user->id) }}" method="POST">
+        @csrf
+        @method('PUT')
 
-    <label for="username">Username:</label>
-    <input type="text" name="username" value="{{ $user->username }}" required>
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $user->name) }}" required>
+        </div>
 
-    <label for="email">Email:</label>
-    <input type="email" name="email" value="{{ $user->email }}" required>
+        <div class="mb-3">
+            <label for="surname" class="form-label">Surname</label>
+            <input type="text" class="form-control" id="surname" name="surname" value="{{ old('surname', $user->surname) }}" required>
+        </div>
 
-    <button type="submit">Update User</button>
-</form>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{ old('email', $user->email) }}" required>
+        </div>
 
-<form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" style="display:inline;">
-    @csrf
-    @method('DELETE')
-    <button type="submit" class="btn btn-danger">Delete User</button>
-</form>
-
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
 @endsection

@@ -17,14 +17,14 @@ class Conference extends Model
         ->withTimestamps()
         ->whereNull('users_conferences.deleted_at');
     }
-    
-        use SoftDeletes; 
-    
-        public function users()
-        {
-            return $this->belongsToMany(User::class, 'users_conferences', 'conference_id', 'user_id')
-                        ->withTimestamps()
-                        ->withTrashed();
-        }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'users_conferences')
+                    ->withTimestamps()
+                    ->whereNull('users.deleted_at'); 
+    }
+
+        
     
 }

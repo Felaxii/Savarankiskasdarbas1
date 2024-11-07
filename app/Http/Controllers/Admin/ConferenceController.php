@@ -35,6 +35,7 @@ class ConferenceController extends Controller
     
         return redirect()->route('admin.conferences.index')->with('success', 'Conference created successfully!');
     }
+
     public function edit($id)
     {
         $conference = Conference::findOrFail($id);
@@ -44,8 +45,8 @@ class ConferenceController extends Controller
     public function update(ConferenceRequest $request, $id)
     {
         $conference = Conference::findOrFail($id);
-        
 
+        // Update conference details
         $conference->update($request->validated());
 
         return redirect()->route('admin.conferences.index')->with('success', 'Conference updated successfully!');
@@ -58,12 +59,14 @@ class ConferenceController extends Controller
 
         return redirect()->route('admin.conferences.index')->with('success', 'Conference deleted successfully!');
     }
+
     public function showAttendees($conferenceId)
-{
-    $conference = Conference::findOrFail($conferenceId);
+    {
+        $conference = Conference::findOrFail($conferenceId);
 
-    $attendees = $conference->users()->whereNull('deleted_at')->get();
+        // Fetch attendees who are not deleted
+        $attendees = $conference->users()->whereNull('deleted_at')->get();
 
-    return view('employee.conferences.attendees', compact('conference', 'attendees'));
-}
+        return view('employee.conferences.attendees', compact('conference', 'attendees'));
+    }
 }
