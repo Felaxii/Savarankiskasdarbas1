@@ -2,54 +2,41 @@
 
 @section('content')
 <div class="container mt-5">
-    <h2>Client Conferences</h2>
-    
-    <div class="mb-4">
-        <h5>Login/Register</h5>
-        <form action="{{ route('client.register.post') }}" method="POST">
-            @csrf
-            <div class="mb-3">
-            <label for="username" class="form-label">Username</label>
-            <input type="text" class="form-control" id="username" name="username" required>
-</div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" required>
-            </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Login/Register</button>
-        </form>
-    </div>
-
+    <h2><b>Client Conferences </b></h2>
+    <br>
+    <br>
+  
     @if($latestConference)
-    <h3>Latest Conference</h3>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Speakers</th>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Address</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>{{ $latestConference->title }}</td>
-                <td>{{ $latestConference->description }}</td>
-                <td>{{ $latestConference->speakers }}</td>
-                <td>{{ $latestConference->date }}</td>
-                <td>{{ $latestConference->time }}</td>
-                <td>{{ $latestConference->address }}</td>
-            </tr>
-        </tbody>
-    </table>
+        <h3>Latest Conferences</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Speakers</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Address</th>
+                    <th>Register</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ $latestConference->title }}</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>
+                       
+                        <a href="{{ route('client.conferences.register', ['conferenceId' => $latestConference->id]) }}" class="btn btn-primary">Register</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     @else
-    <p>No upcoming conferences.</p>
+        <p>No upcoming conferences.</p>
     @endif
 </div>
 @endsection

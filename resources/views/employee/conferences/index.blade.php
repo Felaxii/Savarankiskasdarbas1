@@ -9,7 +9,6 @@
                 <th>Title</th>
                 <th>Description</th>
                 <th>Speakers</th>
-                <th>Lectures</th>
                 <th>Date</th>
                 <th>Time</th>
                 <th>Address</th>
@@ -21,7 +20,6 @@
                     <td>{{ $conference->title }}</td>
                     <td>{{ $conference->description }}</td>
                     <td>{{ $conference->speakers }}</td>
-                    <td>{{ $conference->lectures }}</td>
                     <td>{{ $conference->date }}</td>
                     <td>{{ $conference->time }}</td>
                     <td>{{ $conference->address }}</td>

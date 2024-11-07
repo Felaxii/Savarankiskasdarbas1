@@ -16,13 +16,13 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'username' => 'required|string|max:255|unique:users,username,' . $id,
+            'name' => 'required|string|max:255|unique:users,name,' . $id,
             'email' => 'required|email|max:255|unique:users,email,' . $id,
         ]);
 
         $user = User::findOrFail($id);
         $user->update([
-            'username' => $request->username,
+            'name' => $request->name,
             'email' => $request->email,
         ]);
 
