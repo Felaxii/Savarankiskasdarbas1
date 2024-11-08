@@ -50,3 +50,5 @@
 
     <a href="{{ route('admin.conferences.create') }}" class="btn btn-primary">Create New Conference</a>
 @endsection
+
+

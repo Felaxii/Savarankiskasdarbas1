@@ -69,4 +69,17 @@ class ConferenceController extends Controller
 
         return view('employee.conferences.attendees', compact('conference', 'attendees'));
     }
+    // ConferenceController.php
+public function show(Conference $conference)
+{
+    // If the user is not authenticated, store the URL they tried to access
+    if (!auth()->check()) {
+        session(['url.intended' => url()->current()]); // Store the current URL
+        return redirect()->route('login'); // Redirect to login page
+    }
+
+    // If authenticated, show the conference details
+    return view('conferences.show', compact('conference'));
+}
+
 }

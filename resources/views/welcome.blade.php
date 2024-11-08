@@ -1,9 +1,57 @@
-@extends('app')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">Conference Management</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav me-auto">
+                @if(auth()->check())
+                    @if(auth()->user()->role === 'client')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('client.conferences.index') }}">Client Conferences</a>
+                        </li>
+                    @elseif(auth()->user()->role === 'employee')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('employee.conferences.index') }}">Employee Conferences</a>
+                        </li>
+                    @elseif(auth()->user()->role === 'admin')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('admin.dashboard') }}">Admin Dashboard</a>
+                        </li>
+                    @endif
+                @endif
+            </ul>
+        </div>
+    </div>
+</nav>
 
-@section('content')
-    <h1>Welcome to the Conference Management System</h1>
-    <p>
-    Welcome to our Conference Participation and Management Platform, where organizing and attending events is made seamless and efficient. Whether you're an admin, employee, or client, our system allows easy conference creation, registration, and management. Stay updated on upcoming events, register with just a few clicks, and explore detailed conference information. For organizers, our user-friendly dashboard provides powerful tools to manage attendees and session details, ensuring a smooth and successful event experience. Join us today and make your next conference a success!</p>
+    <div class="container mt-5 text-center">
+        <h1>Welcome to Conference Management</h1>
+        @if(auth()->guest())
+            <a href="{{ route('client.conferences.index') }}" class="btn btn-primary mt-4">Continue as Client</a>
+            <a href="{{ route('employee.login') }}" class="btn btn-secondary mt-4">Continue as Employee</a>
+            <a href="{{ route('admin.login') }}" class="btn btn-danger mt-4">Admin Dashboard</a>
+        @else
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-danger mt-4">Log Out</button>
+            </form>
+        @endif
+    </div>
 
-@endsection
+    <footer class="bg-gray py-4 text-center">
+        <div class="container">
+            <p class="mb-0">&copy; 2024 BPV. All Rights Reserved.</p>
+        </div>
+    </footer>
 
+    <script src="{{ mix('js/app.js') }}"></script>
+</body>
+</html>

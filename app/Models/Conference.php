@@ -18,12 +18,12 @@ class Conference extends Model
         ->whereNull('users_conferences.deleted_at');
     }
 
-    public function users()
-    {
-        return $this->belongsToMany(User::class, 'users_conferences')
-                    ->withTimestamps()
-                    ->whereNull('users.deleted_at'); 
-    }
+public function users()
+{
+    return $this->belongsToMany(User::class, 'users_conferences')
+                ->withTimestamps()
+                ->whereNull('users_conferences.deleted_at');
+}
 
         
     

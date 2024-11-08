@@ -22,7 +22,7 @@ class EmployeeController extends Controller
        
         $conference = Conference::findOrFail($conferenceId);
        
-        $attendees = $conference->users()->whereNull('users.deleted_at')->get();
+        $attendees = $conference->users()->whereNull('user.deleted_at')->get();
     
         return view('employee.conferences.attendees', compact('conference', 'attendees'));
     }
