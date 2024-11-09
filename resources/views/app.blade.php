@@ -69,18 +69,22 @@
         const employeeLink = document.querySelector('#employee-link');
         const adminLink = document.querySelector('#admin-link');
 
+        // Only restrict access to Employee Conferences if the user is not an employee or admin
         if (employeeLink) {
             employeeLink.addEventListener('click', function(event) {
-                if (!@json(session('role')) || @json(session('role')) !== 'employee') {
+                const role = @json(session('role'));
+                if (role !== 'employee' && role !== 'admin') {
                     event.preventDefault();
                     alert("Access Denied");
                 }
             });
         }
 
+        // Restrict access to Admin Dashboard if the user is not an admin
         if (adminLink) {
             adminLink.addEventListener('click', function(event) {
-                if (!@json(session('role')) || @json(session('role')) !== 'admin') {
+                const role = @json(session('role'));
+                if (role !== 'admin') {
                     event.preventDefault();
                     alert("Access Denied");
                 }

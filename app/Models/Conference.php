@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Conference extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = ['title', 'description', 'speakers', 'date', 'time', 'address'];
 

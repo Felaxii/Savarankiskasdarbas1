@@ -29,27 +29,29 @@ public function continueAsClient()
     return redirect()->route('client.conferences.index');
 }
 
-    public function loginEmployee(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string',
-        ]);
-    
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            $user = Auth::user();
-            
-            // Check if the user has the 'employee' role
-            if ($user->hasRole('employee')) {
-                return redirect()->route('employee.conferences.index');
-            }
-            
-            Auth::logout();
-            return back()->withErrors(['email' => 'Unauthorized: Employee role required']);
+public function loginEmployee(Request $request)
+{
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required|string',
+    ]);
+
+    if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+        $user = Auth::user();
+        
+        // Check if the user has the 'employee' role
+        if ($user->hasRole('employee')) {
+            // Set the session role to 'employee'
+            session(['role' => 'employee']);
+            return redirect()->route('employee.conferences.index');
         }
-    
-        return back()->withErrors(['email' => 'Invalid credentials'])->withInput();
+
+        Auth::logout();
+        return back()->withErrors(['email' => 'Unauthorized: Employee role required']);
     }
+
+    return back()->withErrors(['email' => 'Invalid credentials'])->withInput();
+}
     
     // Example for admin login
     public function loginAdmin(Request $request)
@@ -96,5 +98,16 @@ public function continueAsClient()
     }
 
     return back()->withErrors(['email' => 'Invalid credentials']);
+}
+public function showUsersWithConferences()
+{
+    $users = User::with(['conferences' => function ($query) {
+        $query->whereNull('users_conferences.deleted_at');
+    }])
+    ->whereNull('users.deleted_at')
+    ->get();
+
+    // pass the data to the view
+    return view('admin.users.index', compact('users'));
 }
 }

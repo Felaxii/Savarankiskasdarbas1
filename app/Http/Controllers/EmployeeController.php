@@ -19,15 +19,18 @@ class EmployeeController extends Controller
         $conference = Conference::findOrFail($id);
         return view('employee.conferences.show', compact('conference'));
     }
-
     public function showAttendees($conferenceId)
     {
-        // Ensure conference exists
+        // Ensure the conference exists
         $conference = Conference::findOrFail($conferenceId);
-
-        // Get the attendees for the conference (filter out soft-deleted users)
-        $attendees = $conference->users()->whereNull('user.deleted_at')->get();
     
+        // Get the attendees for this conference (include soft-deleted users)
+        $attendees = $conference->users()
+            ->withTrashed() // Include soft-deleted users
+            ->whereNull('users_conferences.deleted_at') // Ensure the registration is not deleted
+            ->get();
+    
+        // Pass the conference and attendees data to the view
         return view('employee.conferences.attendees', compact('conference', 'attendees'));
     }
 }
