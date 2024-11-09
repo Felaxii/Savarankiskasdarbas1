@@ -35,12 +35,24 @@ return [
     |
     */
 
-    'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ],
+'guards' => [
+    'web' => [
+        'driver' => 'session',
+        'provider' => 'users',
     ],
+
+    'employee' => [
+        'driver' => 'session',
+        'provider' => 'users',  // Use the same provider for employees
+    ],
+
+    'admin' => [
+        'driver' => 'session',
+        'provider' => 'users',  // Use the same provider for admins
+    ],
+],
+
+
 
     /*
     |--------------------------------------------------------------------------
@@ -59,11 +71,11 @@ return [
     |
     */
 
-    'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
-        ],
+'providers' => [
+    'users' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\User::class,  // Default user model
+    ],
 
         // 'users' => [
         //     'driver' => 'database',

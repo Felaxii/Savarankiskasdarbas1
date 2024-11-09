@@ -19,31 +19,39 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('client.conferences.index') }}">Client Conferences</a>
                 </li>
-
-                <!-- Employee and Admin links are always shown, but access is restricted -->
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('employee.conferences.index') }}" id="employee-link">Employee Conferences</a>
                 </li>
-
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('admin.dashboard') }}" id="admin-link">Admin Dashboard</a>
+                    <a class="nav-link" href="{{ route('admin.home') }}" id="admin-link">Admin Dashboard</a>
                 </li>
             </ul>
-            
-            <form action="{{ route('logout') }}" method="POST" class="d-inline-block">
-                @csrf
-                <button type="submit" class="btn btn-danger">
-                    @auth
-                        Log Out
-                    @else
-                        Log Out
-                    @endauth
-                </button>
-            </form>
+
+            <!-- Showing the assigned role -->
+            @if(session()->has('role'))
+    <span class="navbar-text text-white me-3">
+        Current Role: 
+        @if(session('role') === 'client')
+            Client
+        @elseif(session('role') === 'employee')
+            Employee
+        @elseif(session('role') === 'admin')
+            Admin
+        @else
+            {{ ucfirst(session('role')) }}  
+        @endif
+    </span>
+    <form action="{{ route('logout') }}" method="POST" class="d-inline-block">
+        @csrf
+        <button type="submit" class="btn btn-danger">Log Out</button>
+    </form>
+@else
+    <span class="navbar-text text-white me-3">No role assigned</span>
+@endif
+
         </div>
     </div>
 </nav>
-
 
 <div class="container mt-5">
     @yield('content')
@@ -54,29 +62,28 @@
         <p class="mb-0">&copy; 2024 BPV. All Rights Reserved.</p>
     </div>
 </footer>
+
 <script src="{{ mix('js/app.js') }}"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Get the employee and admin links
         const employeeLink = document.querySelector('#employee-link');
         const adminLink = document.querySelector('#admin-link');
 
-        // Check if the user has proper roles and prevent navigation if they don't
         if (employeeLink) {
             employeeLink.addEventListener('click', function(event) {
-                @if(!auth()->check() || !auth()->user()->hasRole('employee'))
+                if (!@json(session('role')) || @json(session('role')) !== 'employee') {
                     event.preventDefault();
                     alert("Access Denied");
-                @endif
+                }
             });
         }
 
         if (adminLink) {
             adminLink.addEventListener('click', function(event) {
-                @if(!auth()->check() || !auth()->user()->hasRole('admin'))
+                if (!@json(session('role')) || @json(session('role')) !== 'admin') {
                     event.preventDefault();
                     alert("Access Denied");
-                @endif
+                }
             });
         }
     });

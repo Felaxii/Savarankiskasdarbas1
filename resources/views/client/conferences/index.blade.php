@@ -38,6 +38,7 @@
                 </tr>
             </tbody>
         </table>
+        
     @else
         <p>No upcoming conferences.</p>
     @endif

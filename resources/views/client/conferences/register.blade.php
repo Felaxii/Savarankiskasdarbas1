@@ -44,5 +44,7 @@
     <br>
     <a href="{{ route('client.login') }}" class="btn btn-secondary">Login</a>
 
+
+    
 </div>
 @endsection

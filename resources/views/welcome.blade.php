@@ -23,7 +23,7 @@
                         </li>
                     @elseif(auth()->user()->role === 'admin')
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('admin.dashboard') }}">Admin Dashboard</a>
+                            <a class="nav-link" href="{{ route('admin.home') }}">Admin Dashboard</a>
                         </li>
                     @endif
                 @endif
@@ -35,7 +35,10 @@
     <div class="container mt-5 text-center">
         <h1>Welcome to Conference Management</h1>
         @if(auth()->guest())
-            <a href="{{ route('client.conferences.index') }}" class="btn btn-primary mt-4">Continue as Client</a>
+            <form action="{{ route('client.continueAsClient') }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-primary mt-4">Continue as Client</button>
+            </form>
             <a href="{{ route('employee.login') }}" class="btn btn-secondary mt-4">Continue as Employee</a>
             <a href="{{ route('admin.login') }}" class="btn btn-danger mt-4">Admin Dashboard</a>
         @else

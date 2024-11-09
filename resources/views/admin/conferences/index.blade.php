@@ -8,7 +8,6 @@
             {{ session('success') }}
         </div>
     @endif
-
     <table class="table">
         <thead>
             <tr>
@@ -49,6 +48,7 @@
     </table>
 
     <a href="{{ route('admin.conferences.create') }}" class="btn btn-primary">Create New Conference</a>
+
 @endsection
 
 
