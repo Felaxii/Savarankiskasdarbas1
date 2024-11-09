@@ -7,7 +7,6 @@ use App\Models\Conference;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
 
 class ClientController extends Controller
 {
@@ -63,7 +62,9 @@ class ClientController extends Controller
     // Show the login form
     public function showLoginForm()
     {
+        // Fetch the latest conference
         $latestConference = Conference::latest()->first(); 
+
         return view('client.conferences.login', compact('latestConference'));
     }
 
@@ -86,27 +87,19 @@ class ClientController extends Controller
     
         // Log the user in
         Auth::login($user);
-    
-        $conferenceId = session('conferenceId');
-    
-        if ($conferenceId) {
-            return redirect()->route('client.conferences.show', ['id' => $conferenceId]);
-        }
-    
-        $latestConference = Conference::latest()->first();
-        if ($latestConference) {
-            return redirect()->route('client.conferences.show', ['id' => $latestConference->id]);
-        }
-    
-        return redirect()->route('client.conferences.index');
+
+        // Redirect to the latest conference page after login
+        return redirect()->route('client.conferences.show', ['id' => Conference::latest()->first()->id]);
     }
 
-    public function continueAsClient()
+    public function continueAsClient(Request $request)
     {
-        Session::put('role', 'client');
+        // Set the session or role directly for the client
+        session(['role' => 'client']);  // Assign client role
+    
+        // Redirect to client dashboard
         return redirect()->route('client.conferences.index');
     }
-    
 
     // Show a specific conference
     public function show($id)

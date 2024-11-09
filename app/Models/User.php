@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Role;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use Notifiable, SoftDeletes;
+    use Notifiable, SoftDeletes, HasRoles;
 
     protected $fillable = [
-        'name', 'surname', 'email', 'password', 
+        'name', 'surname', 'email', 'password',
     ];
 
     // Define the relationship to conferences through a pivot table (users_conferences)
@@ -22,16 +22,10 @@ class User extends Authenticatable
                     ->withTimestamps();
     }
 
-    // Define the relationship to roles through the 'users' table (assumes a column like 'role' exists in users)
-    public function roles()
-    {
-        return $this->belongsToMany(Role::class, 'users_roles', 'user_id', 'role_id');
-    }
-
-    // Optional: A helper function to check if the user has a certain role
-    public function hasRole($roleName)
-    {
-        // Check if the user has a role, assuming 'roles' table is used
-        return $this->role === $roleName;
-    }
+public function roles()
+{
+    return $this->morphToMany('Spatie\Permission\Models\Role', 'model', 'model_has_roles', 'model_id', 'role_id');
 }
+
+}
+

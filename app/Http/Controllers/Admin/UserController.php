@@ -1,65 +1,55 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
-
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
-    // Display the list of users
-    public function index()
+    // Method to create an employee user
+    public function createEmployee()
     {
-        // Fetch all users (you can add pagination if needed)
-        $users = User::all();
+        // Check if the employee already exists to avoid duplicates
+        if (User::where('email', 'employee@example.com')->exists()) {
+            return redirect()->route('admin.users.index')->with('error', 'Employee already exists.');
+        }
 
-        // Return the users view with the list of users
-        return view('admin.users.index', compact('users'));
-    }
-
-    // Show the form for editing a user
-    public function edit($id)
-    {
-        // Find the user by ID
-        $user = User::findOrFail($id);
-        
-        // Return the edit view with the user data
-        return view('admin.users.edit', compact('user'));
-    }
-
-    // Update the user in the database
-    public function update(Request $request, $id)
-    {
-        // Validate the input
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'surname' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . $id,
+        // Create a new user with fixed values
+        $user = User::create([
+            'name' => 'Employee',
+            'surname' => 'Employee',
+            'email' => 'employee@gmail.com',
+            'password' => Hash::make('Employee'),  // Password is hashed
         ]);
 
-        // Find the user by ID
-        $user = User::findOrFail($id);
-
-        // Update the user with the new data
-        $user->update([
-            'name' => $request->name,
-            'surname' => $request->surname,
-            'email' => $request->email,
-        ]);
+        // Assign the 'employee' role
+        $user->assignRole('employee');
 
         // Redirect back with a success message
-        return redirect()->route('admin.users.index')
-                         ->with('success', 'User updated successfully!');
+        return redirect()->route('admin.users.index')->with('success', 'Employee created successfully.');
     }
 
-    // Delete the user
-    public function destroy($id)
+    // Method to create an admin user (same idea)
+    public function createAdmin()
     {
-        $user = User::findOrFail($id);
-        $user->delete();
+        // Check if the admin already exists
+        if (User::where('email', 'admin@gmail.com')->exists()) {
+            return redirect()->route('admin.users.index')->with('error', 'Admin already exists.');
+        }
 
-        return redirect()->route('admin.users.index')
-                         ->with('success', 'User deleted successfully!');
+        // Create a new user (admin)
+        $user = User::create([
+            'name' => 'Admin',
+            'surname' => 'Admin',
+            'email' => 'admin@gmail.com',
+            'password' => Hash::make('Admin'),  // Password is hashed
+        ]);
+
+        // Assign the 'admin' role
+        $user->assignRole('admin');
+
+        // Redirect with success message
+        return redirect()->route('admin.users.index')->with('success', 'Admin created successfully.');
     }
 }

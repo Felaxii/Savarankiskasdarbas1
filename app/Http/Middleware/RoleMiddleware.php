@@ -4,22 +4,15 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class RoleMiddleware
 {
-    public function handle(Request $request, Closure $next, $role)
+    public function handle($request, Closure $next, $role)
     {
-        if (!Auth::check()) {
-            return redirect()->route('welcome');
-        }
-
-        $user = Auth::user();
-        if ($user->role === $role) {
+        if (auth()->check() && auth()->user()->hasRole($role)) {
             return $next($request);
         }
-
-        // Redirect if the user role doesn't match
-        return redirect()->route('access.denied');
+    
+        return redirect()->route('access.denied')->with('error', 'Access Denied: Insufficient permissions.');
     }
 }

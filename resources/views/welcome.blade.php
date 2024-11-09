@@ -34,15 +34,18 @@
 
     <div class="container mt-5 text-center">
         <h1>Welcome to Conference Management</h1>
+
         @if(auth()->guest())
-            <form action="{{ route('client.continueAsClient') }}" method="POST">
+            <!-- Guest options: Continue as Client, Employee, or Admin -->
+            <form action="{{ route('client.continueAsClient') }}" method="POST" class="d-inline-block">
                 @csrf
                 <button type="submit" class="btn btn-primary mt-4">Continue as Client</button>
             </form>
             <a href="{{ route('employee.login') }}" class="btn btn-secondary mt-4">Continue as Employee</a>
             <a href="{{ route('admin.login') }}" class="btn btn-danger mt-4">Admin Dashboard</a>
         @else
-            <form action="{{ route('logout') }}" method="POST">
+            <!-- User is logged in, show logout button -->
+            <form action="{{ route('logout') }}" method="POST" class="d-inline-block">
                 @csrf
                 <button type="submit" class="btn btn-danger mt-4">Log Out</button>
             </form>
