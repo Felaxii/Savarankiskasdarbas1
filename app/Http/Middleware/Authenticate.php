@@ -16,6 +16,6 @@ class Authenticate
         }
 
         // Redirect to login if not authenticated
-        return redirect()->route('login'); // Adjust to your login route
+        return redirect()->route('login'); 
     }
 }

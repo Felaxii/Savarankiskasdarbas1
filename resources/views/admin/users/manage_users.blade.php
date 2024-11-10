@@ -27,10 +27,7 @@
                     <td>{{ $user->surname }}</td>
                     <td>{{ $user->email }}</td>
                     <td>
-                        <!-- Edit Button -->
                         <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-warning">Edit</a>
-
-                        <!-- Delete Button -->
                         <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')

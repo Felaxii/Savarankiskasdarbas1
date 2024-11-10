@@ -15,13 +15,12 @@ class User extends Authenticatable
         'name', 'surname', 'email', 'password',
     ];
 
-    // Define the relationship to conferences through a pivot table (users_conferences)
     public function conferences()
     {
         return $this->belongsToMany(Conference::class, 'users_conferences', 'user_id', 'conference_id')
-                    ->whereNull('users_conferences.deleted_at') // Ensure proper null checks
+                    ->whereNull('users_conferences.deleted_at') 
                     ->withTimestamps()
-                    ->withTrashed(); // This ensures it handles soft deletes correctly
+                    ->withTrashed(); 
     }
 
 public function roles()

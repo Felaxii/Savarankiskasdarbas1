@@ -8,20 +8,18 @@ use Illuminate\Http\Request;
 
 class ConferenceController extends Controller
 {
-    // List all conferences
     public function index()
     {
         $conferences = Conference::all();
         return view('admin.conferences.index', compact('conferences'));
     }
 
-    // Create a new conference
+
     public function create()
     {
         return view('admin.conferences.create');
     }
 
-    // Store the newly created conference
     public function store(Request $request)
     {
         $request->validate([
@@ -38,7 +36,6 @@ class ConferenceController extends Controller
         return redirect()->route('admin.conferences.index')->with('success', 'Conference created successfully');
     }
 
-    // Show a specific conference
     public function show($id)
     {
         $conference = Conference::findOrFail($id);

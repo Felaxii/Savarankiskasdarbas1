@@ -13,14 +13,14 @@ return new class extends Migration
     public function up()
     {
         Schema::table('conferences', function (Blueprint $table) {
-            $table->softDeletes(); // This adds the `deleted_at` column for soft deletes
+            $table->softDeletes(); 
         });
     }
     
     public function down()
     {
         Schema::table('conferences', function (Blueprint $table) {
-            $table->dropSoftDeletes(); // Removes the `deleted_at` column if you rollback
+            $table->dropSoftDeletes(); 
         });
     }
 };

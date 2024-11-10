@@ -9,7 +9,6 @@ class RolesTableSeeder extends Seeder
 {
     public function run()
     {
-        // Create roles for Admin, Employee, and Client
         Role::create(['name' => 'admin']);
         Role::create(['name' => 'employee']);
         Role::create(['name' => 'client']);

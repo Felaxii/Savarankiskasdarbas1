@@ -16,7 +16,6 @@ class AuthController extends Controller
         if (Auth::check()) {
             $user = Auth::user();
             
-            // Assign 'client' role if not already assigned
             if (!$user->hasRole('client')) {
                 $user->assignRole('client');
             }
@@ -102,7 +101,7 @@ class AuthController extends Controller
         return view('auth.login', compact('loginType'));
     }
 
-    // Example function to show users with conferences
+    // Function to show users with conferences
     public function showUsersWithConferences()
     {
         $users = User::with(['conferences' => function ($query) {

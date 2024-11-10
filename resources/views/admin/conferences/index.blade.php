@@ -14,7 +14,6 @@
                 <th>Title</th>
                 <th>Description</th>
                 <th>Speakers</th>
-
                 <th>Date</th>
                 <th>Time</th>
                 <th>Address</th>

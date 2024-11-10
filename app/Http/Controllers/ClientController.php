@@ -46,7 +46,7 @@ class ClientController extends Controller
             'name' => $request->name,
             'surname' => $request->surname,
             'email' => $request->email,
-            'password' => bcrypt($request->password), // Hash password
+            'password' => bcrypt($request->password), 
         ]);
         
         // Register the user for the conference
@@ -95,7 +95,7 @@ class ClientController extends Controller
     public function continueAsClient(Request $request)
     {
         // Set the session or role directly for the client
-        session(['role' => 'client']);  // Assign client role
+        session(['role' => 'client']); 
     
         // Redirect to client dashboard
         return redirect()->route('client.conferences.index');

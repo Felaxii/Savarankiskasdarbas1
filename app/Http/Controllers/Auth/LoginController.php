@@ -7,7 +7,6 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
 {
-    // Use the AuthenticatesUsers trait for login functionality
     use AuthenticatesUsers;
 
     /**

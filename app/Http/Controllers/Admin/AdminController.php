@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Conference;  // Example for handling conferences (you can modify this)
-use App\Models\User;  // Example for handling users (you can modify this)
+use App\Models\Conference; 
+use App\Models\User; 
 
 class AdminController extends Controller
 {
@@ -18,8 +18,8 @@ class AdminController extends Controller
     // Admin dashboard
     public function index()
     {
-        $conferences = Conference::all();  // Get all conferences
-        $users = User::all();  // Get all users
+        $conferences = Conference::all(); 
+        $users = User::all();  
         return view('admin.home', compact('conferences', 'users'));
     }
 
@@ -28,12 +28,12 @@ class AdminController extends Controller
     {
         // Try to fetch all conferences from the database
         try {
-            $conferences = Conference::all(); // Ensure the model is correctly imported
-            return view('admin.conferences.index', compact('conferences')); // Passing data to the view
+            $conferences = Conference::all(); 
+            return view('admin.conferences.index', compact('conferences')); 
         } catch (\Exception $e) {
             // Catch any exception and log it for debugging
             \Log::error('Error fetching conferences: ' . $e->getMessage());
-            return response()->view('errors.500', [], 500); // Return a custom 500 error page
+            return response()->view('errors.500', [], 500);
         }
     }
 
@@ -83,10 +83,10 @@ class AdminController extends Controller
     $request->validate([
         'title' => 'required|string|max:255',
         'description' => 'required|string',
-        'speakers' => 'required|string', // Added speakers
+        'speakers' => 'required|string', 
         'date' => 'required|date',
-        'time' => 'required|date_format:H:i',// Ensure the time is in the correct format
-        'address' => 'required|string', // Added address
+        'time' => 'required|date_format:H:i',
+        'address' => 'required|string', 
     ]);
 
     // Find the conference by ID
@@ -133,7 +133,7 @@ class AdminController extends Controller
             $request->validate([
                 'name' => 'required|string|max:255',
                 'surname' => 'required|string|max:255',
-                'email' => 'required|email|unique:users,email,' . $user->id,  // Ensure the email is unique but ignore the current user's email
+                'email' => 'required|email|unique:users,email,' . $user->id,  
             ]);
         
             // Update the user with only the allowed fields
