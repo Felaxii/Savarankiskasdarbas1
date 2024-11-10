@@ -3,16 +3,18 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EmployeeMiddleware
 {
     public function handle($request, Closure $next)
     {
-        if (session('role') !== 'employee') {
-            return redirect()->route('welcome'); // Redirect to welcome if not an employee
+        // Check if the user has the 'employee' role OR the 'admin' role
+        if (Auth::check() && (Auth::user()->hasRole('employee') || Auth::user()->hasRole('admin'))) {
+            return $next($request);
         }
-    
-        return $next($request);
+
+        // Redirect or deny access if neither role matches
+        return redirect()->route('welcome')->withErrors('Access Denied');
     }
 }

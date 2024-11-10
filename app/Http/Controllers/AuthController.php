@@ -10,55 +10,82 @@ use Session;
 
 class AuthController extends Controller
 {
-// Continue as Client: Automatically assign the 'client' role
-public function continueAsClient()
-{
-    // Check if the user is logged in
-    if (Auth::check()) {
-        $user = Auth::user();
-        
-        // Check if the user already has the 'client' role to avoid duplicate role assignment
-        if (!$user->hasRole('client')) {
-            $user->assignRole('client');
-        }
-    } else {
-        // If not logged in, redirect to login page or assign a guest role if needed
-        Session::put('role', 'guest');
-    }
-
-    return redirect()->route('client.conferences.index');
-}
-
-public function loginEmployee(Request $request)
-{
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required|string',
-    ]);
-
-    if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-        $user = Auth::user();
-        
-        // Check if the user has the 'employee' role
-        if ($user->hasRole('employee')) {
-            // Set the session role to 'employee'
-            session(['role' => 'employee']);
-            return redirect()->route('employee.conferences.index');
+    // Continue as Client: Automatically assign the 'client' role
+    public function continueAsClient()
+    {
+        if (Auth::check()) {
+            $user = Auth::user();
+            
+            // Assign 'client' role if not already assigned
+            if (!$user->hasRole('client')) {
+                $user->assignRole('client');
+            }
+        } else {
+            Session::put('role', 'guest');
         }
 
-        Auth::logout();
-        return back()->withErrors(['email' => 'Unauthorized: Employee role required']);
+        return redirect()->route('client.conferences.index');
     }
 
-    return back()->withErrors(['email' => 'Invalid credentials'])->withInput();
-}
+    // Employee Login
+    public function loginEmployee(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string',
+        ]);
+
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            $user = Auth::user();
+
+            if ($user->hasRole('employee')) {
+                session(['role' => 'employee']);
+                return redirect()->route('employee.conferences.index');
+            }
+
+            Auth::logout();
+            return back()->withErrors(['email' => 'Unauthorized: Employee role required']);
+        }
+
+        return back()->withErrors(['email' => 'Invalid credentials'])->withInput();
+    }
     
-    // Example for admin login
+    // Admin Login
     public function loginAdmin(Request $request)
     {
-        // Login logic for admin
-        // Once logged in, redirect to admin home
-        return redirect()->route('admin.home');
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string',
+        ]);
+
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            $user = Auth::user();
+
+            if ($user->hasRole('admin')) {
+                session(['role' => 'admin']);
+                return redirect()->route('admin.home');
+            }
+
+            Auth::logout();
+            return back()->withErrors(['email' => 'Unauthorized: Admin role required']);
+        }
+
+        return back()->withErrors(['email' => 'Invalid credentials'])->withInput();
+    }
+
+    // Client Login
+    public function login(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if (Auth::guard('client')->attempt($request->only('email', 'password'))) {
+            return redirect()->route('client.redirectToLatestConference');
+        }
+
+        return back()->withErrors(['email' => 'Invalid credentials']);
     }
 
     // Logout logic
@@ -68,46 +95,22 @@ public function loginEmployee(Request $request)
         return redirect()->route('welcome');
     }
 
-    // Display login form (for Employee or Admin)
-    public function displayLogin()
+    // Display Login Form
+    public function displayLogin(Request $request)
     {
-        return view('auth.login');
+        $loginType = $request->route()->getName() === 'admin.login' ? 'Admin' : 'Employee';
+        return view('auth.login', compact('loginType'));
     }
 
-    public function authenticated(Request $request, $user)
+    // Example function to show users with conferences
+    public function showUsersWithConferences()
     {
-        if ($user->role === 'admin') {
-            return redirect()->route('admin.home'); // Admin dashboard
-        } elseif ($user->role === 'employee') {
-            return redirect()->route('employee.conferences.index'); // Employee dashboard
-        }
+        $users = User::with(['conferences' => function ($query) {
+            $query->whereNull('users_conferences.deleted_at');
+        }])
+        ->whereNull('users.deleted_at')
+        ->get();
 
-        return redirect()->route('client.dashboard'); // Default to client dashboard
+        return view('admin.users.index', compact('users'));
     }
-    public function login(Request $request)
-{
-    // Validate login
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required',
-    ]);
-
-    // Attempt to log in as a client
-    if (Auth::guard('client')->attempt($request->only('email', 'password'))) {
-        return redirect()->route('client.redirectToLatestConference');
-    }
-
-    return back()->withErrors(['email' => 'Invalid credentials']);
-}
-public function showUsersWithConferences()
-{
-    $users = User::with(['conferences' => function ($query) {
-        $query->whereNull('users_conferences.deleted_at');
-    }])
-    ->whereNull('users.deleted_at')
-    ->get();
-
-    // pass the data to the view
-    return view('admin.users.index', compact('users'));
-}
 }

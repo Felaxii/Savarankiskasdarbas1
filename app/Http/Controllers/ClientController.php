@@ -107,4 +107,5 @@ class ClientController extends Controller
         $conference = Conference::findOrFail($id);
         return view('client.conferences.show', compact('conference'));
     }
+    
 }

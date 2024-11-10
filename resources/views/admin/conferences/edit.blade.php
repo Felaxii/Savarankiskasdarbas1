@@ -40,9 +40,9 @@
     </div>
 
     <div class="mb-3">
-        <label for="time" class="form-label">Time:</label>
-        <input type="time" name="time" class="form-control" value="{{ old('time', $conference->time) }}" required>
-    </div>
+    <label for="time" class="form-label">Time:</label>
+    <input type="time" name="time" class="form-control" value="{{ old('time', \Carbon\Carbon::parse($conference->time)->format('H:i')) }}" required>
+</div>
     
     <div class="mb-3">
         <label for="address" class="form-label">Address:</label>
